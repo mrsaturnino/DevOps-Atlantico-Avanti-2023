@@ -1,0 +1,26 @@
+version: '3.2' # versao do docker-compose a ser utilizada no arquivo yaml
+
+# configs da aplicacao
+services:
+  mysql: # configurando o mysql
+    image: mysql:5.7 # imagem e versao
+    environment: # variaveis de ambiente (olhar documentacao da imagem no docker hub)
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "database_test"
+    ports: # portas do host:container
+      - "3306:3306"
+    volumes: # especificar volume do banco 
+      - /data/mysql:/var/lib/mysql
+    networks: # especificando a rede
+      - networkTest
+
+  adminer: # configurando o adminer (interface front-end para utilizar com o banco)
+    image: adminer:latest
+    ports:
+      - 8080:8080
+    networks:
+      - networkTest
+
+networks: # definicoes de rede
+  networkTest:
+    driver: bridge
